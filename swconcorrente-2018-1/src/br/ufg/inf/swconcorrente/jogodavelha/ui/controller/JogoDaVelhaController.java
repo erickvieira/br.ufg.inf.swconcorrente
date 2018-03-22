@@ -1,6 +1,6 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.controller;
 
-import br.ufg.inf.swconcorrente.jogodavelha.ui.JogoDaVelhaTabView;
+import br.ufg.inf.swconcorrente.jogodavelha.ui.view.JogoDaVelhaTabView;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.BoardPositions;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.JogoDaVelha;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.Matches;

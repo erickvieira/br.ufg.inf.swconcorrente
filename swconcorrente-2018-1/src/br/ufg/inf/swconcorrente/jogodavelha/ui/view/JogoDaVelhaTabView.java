@@ -1,4 +1,4 @@
-package br.ufg.inf.swconcorrente.jogodavelha.ui;
+package br.ufg.inf.swconcorrente.jogodavelha.ui.view;
 
 import javax.swing.*;
 import java.awt.*;

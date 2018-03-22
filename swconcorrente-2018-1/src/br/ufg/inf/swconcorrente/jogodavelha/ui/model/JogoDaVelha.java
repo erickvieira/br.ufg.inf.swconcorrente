@@ -39,13 +39,13 @@ public class JogoDaVelha {
 
     public boolean checkMatches() {
         return (checkMatches_TLtoBR()       != Matches.NONE
-                && checkMatches_TtoB()      != Matches.NONE
-                && checkMatches_TLtoBL()    != Matches.NONE
-                && checkMatches_TRtoBR()    != Matches.NONE
-                && checkMatches_TRtoBL()    != Matches.NONE
-                && checkMatches_TLtoTR()    != Matches.NONE
-                && checkMatches_LtoR()      != Matches.NONE
-                && checkMatches_BLtoBR()    != Matches.NONE);
+                || checkMatches_TtoB()      != Matches.NONE
+                || checkMatches_TLtoBL()    != Matches.NONE
+                || checkMatches_TRtoBR()    != Matches.NONE
+                || checkMatches_TRtoBL()    != Matches.NONE
+                || checkMatches_TLtoTR()    != Matches.NONE
+                || checkMatches_LtoR()      != Matches.NONE
+                || checkMatches_BLtoBR()    != Matches.NONE);
     }
 
     public boolean checkIsMarked(int position, PlayerMark mark) {

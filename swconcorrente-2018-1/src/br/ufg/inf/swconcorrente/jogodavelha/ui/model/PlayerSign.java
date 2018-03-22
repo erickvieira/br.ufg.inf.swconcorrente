@@ -1,13 +1,13 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.model;
 
-public enum PlayerMark {
+public enum PlayerSign {
     X("X"),
     O("O"),
     NONE("");
 
     private final String sign;
 
-    PlayerMark(String s) {
+    PlayerSign(String s) {
         sign = s;
     }
 

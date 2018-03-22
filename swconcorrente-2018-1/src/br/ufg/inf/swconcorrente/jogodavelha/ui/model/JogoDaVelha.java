@@ -1,22 +1,20 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.model;
 
-
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import java.util.ArrayList;
 
 public class JogoDaVelha {
 
     private static final int BOARD_LIMIT = 9;
-    private ArrayList<PlayerMark> boardGame;
+    private ArrayList<PlayerSign> boardGame;
     private Matches match;
     private int currentPosition;
-    private PlayerMark currentPlayer;
+    private PlayerSign currentPlayer;
 
     public JogoDaVelha() {
         initBoardGame();
+        System.out.println("INIT LIST: " + boardGame.toString());
         match = Matches.NONE;
-        currentPlayer = PlayerMark.NONE;
+        currentPlayer = PlayerSign.NONE;
         currentPosition = BoardPositions.NONE.getValue();
     }
     
@@ -24,32 +22,36 @@ public class JogoDaVelha {
         boardGame = new ArrayList<>(BOARD_LIMIT);
 
         for (int i = 0; i < BOARD_LIMIT; i++) {
-            boardGame.add(PlayerMark.NONE);
+            boardGame.add(PlayerSign.NONE);
         }
     }
     
-    public Matches setSelected(int position, PlayerMark player) {
+    public Matches setSelected(int position, PlayerSign player) {
         currentPosition = position;
         currentPlayer = player;
         boardGame.set(position, player);
-        checkMatches();
+        System.out.println("SET LIST ELEMENT: " + boardGame.toString());
+        checkGameOver();
+        System.out.println("AFTER CHECK: " + boardGame.toString());
 
+        System.out.printf("");
         return match;
     }
 
-    public boolean checkMatches() {
-        return (checkMatches_TLtoBR()       != Matches.NONE
-                || checkMatches_TtoB()      != Matches.NONE
-                || checkMatches_TLtoBL()    != Matches.NONE
-                || checkMatches_TRtoBR()    != Matches.NONE
-                || checkMatches_TRtoBL()    != Matches.NONE
-                || checkMatches_TLtoTR()    != Matches.NONE
-                || checkMatches_LtoR()      != Matches.NONE
-                || checkMatches_BLtoBR()    != Matches.NONE);
+    public boolean checkGameOver() {
+        return (!checkMatches_TLtoBR().toString().equals(Matches.NONE.toString())
+                || !checkMatches_TtoB().toString().equals(Matches.NONE.toString())
+                || !checkMatches_TLtoBL().toString().equals(Matches.NONE.toString())
+                || !checkMatches_TRtoBR().toString().equals(Matches.NONE.toString())
+                || !checkMatches_TRtoBL().toString().equals(Matches.NONE.toString())
+                || !checkMatches_TLtoTR().toString().equals(Matches.NONE.toString())
+                || !checkMatches_LtoR().toString().equals(Matches.NONE.toString())
+                || !checkMatches_BLtoBR().toString().equals(Matches.NONE.toString()));
     }
 
-    public boolean checkIsMarked(int position, PlayerMark mark) {
-        return boardGame.get(position) == mark;
+    public boolean checkIsMarked(int position, PlayerSign sign) {
+        System.out.println("[" + position + "] LIST: " + boardGame.get(position) + " CLICKED: " + sign);
+        return boardGame.get(position).toString().equals(sign.toString());
     }
 
     private Matches checkMatches_TLtoBR() {
@@ -61,8 +63,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.TOP_LEFT_TO_BOTTOM_RIGHT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_LEFT_TO_BOTTOM_RIGHT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_LEFT_TO_BOTTOM_RIGHT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_TtoB() {
@@ -74,8 +77,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.TOP_TO_BOTTOM;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_TO_BOTTOM : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_TO_BOTTOM : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_TLtoBL() {
@@ -87,8 +91,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.TOP_LEFT_TO_BOTTOM_LEFT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_LEFT_TO_BOTTOM_LEFT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_LEFT_TO_BOTTOM_LEFT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_TRtoBR() {
@@ -100,8 +105,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.TOP_RIGHT_TO_BOTTOM_RIGHT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_RIGHT_TO_BOTTOM_RIGHT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_RIGHT_TO_BOTTOM_RIGHT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_TRtoBL() {
@@ -113,8 +119,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.TOP_RIGHT_TO_BOTTOM_LEFT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_RIGHT_TO_BOTTOM_LEFT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_RIGHT_TO_BOTTOM_LEFT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_TLtoTR() {
@@ -126,8 +133,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.TOP_LEFT_TO_TOP_RIGHT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_LEFT_TO_TOP_RIGHT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.TOP_LEFT_TO_TOP_RIGHT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_LtoR() {
@@ -139,8 +147,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.LEFT_TO_RIGHT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.LEFT_TO_RIGHT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.LEFT_TO_RIGHT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     private Matches checkMatches_BLtoBR() {
@@ -152,8 +161,9 @@ public class JogoDaVelha {
         boolean isMarked2 = checkIsMarked(id2, currentPlayer);
         boolean isMarked3 = checkIsMarked(id3, currentPlayer);
 
-        match = Matches.BOTTOM_LEFT_TO_BOTTOM_RIGHT;
-        return (isMarked1 && isMarked2 && isMarked3) ? Matches.BOTTOM_LEFT_TO_BOTTOM_RIGHT : Matches.NONE;
+        match = (isMarked1 && isMarked2 && isMarked3) ? Matches.BOTTOM_LEFT_TO_BOTTOM_RIGHT : Matches.NONE;
+        System.out.println("IDS: " + id1 + ", " + id2 + ", " + id3);
+        return match;
     }
 
     public Matches getMatch() {

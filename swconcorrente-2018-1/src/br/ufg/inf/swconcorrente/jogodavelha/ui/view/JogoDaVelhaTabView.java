@@ -1,6 +1,6 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.view;
 
-import br.ufg.inf.swconcorrente.jogodavelha.ui.model.BoardPositions;
+import br.ufg.inf.swconcorrente.jogodavelha.ui.model.BoardMap;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -11,15 +11,15 @@ public class JogoDaVelhaTabView extends JFrame {
     private static final int HEIGHT = 560;
     private static final int BOARD_LIMIT = 9;
 
-    private static final int TL     = BoardPositions.TOP_LEFT.getValue();
-    private static final int T      = BoardPositions.TOP.getValue();
-    private static final int TR     = BoardPositions.TOP_RIGHT.getValue();
-    private static final int L      = BoardPositions.LEFT.getValue();
-    private static final int C      = BoardPositions.CENTER.getValue();
-    private static final int R      = BoardPositions.RIGHT.getValue();
-    private static final int BL     = BoardPositions.BOTTOM_LEFT.getValue();
-    private static final int B      = BoardPositions.BOTTOM.getValue();
-    private static final int BR     = BoardPositions.BOTTOM_RIGHT.getValue();
+    private static final int TL     = BoardMap.TOP_LEFT.getValue();
+    private static final int T      = BoardMap.TOP.getValue();
+    private static final int TR     = BoardMap.TOP_RIGHT.getValue();
+    private static final int L      = BoardMap.LEFT.getValue();
+    private static final int C      = BoardMap.CENTER.getValue();
+    private static final int R      = BoardMap.RIGHT.getValue();
+    private static final int BL     = BoardMap.BOTTOM_LEFT.getValue();
+    private static final int B      = BoardMap.BOTTOM.getValue();
+    private static final int BR     = BoardMap.BOTTOM_RIGHT.getValue();
 
     private JPanel boardPanel;
     private JButton btnJVReset;

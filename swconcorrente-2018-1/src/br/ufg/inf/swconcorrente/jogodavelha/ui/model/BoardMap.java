@@ -1,6 +1,6 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.model;
 
-public enum BoardPositions {
+public enum BoardMap {
     TOP_LEFT(0),
     TOP(1),
     TOP_RIGHT(2),
@@ -13,14 +13,14 @@ public enum BoardPositions {
     NONE(-1);
 
     /* MAP:
-    * TOP_LEFT    |    TOP     |    TOP_RIGHT
-    * LEFT        |   CENTER   |        RIGHT
-    * BTTOM_LEFT  |   BOTTOM   | BOTTOM_RIGHT
+    * TOP_LEFT     |    TOP     |    TOP_RIGHT
+    * LEFT         |   CENTER   |        RIGHT
+    * BOTTOM_LEFT  |   BOTTOM   | BOTTOM_RIGHT
     * */
 
     private final int value;
 
-    BoardPositions(final int newValue) {
+    BoardMap(final int newValue) {
         value = newValue;
     }
 

@@ -1,5 +1,7 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.model;
 
+import org.jetbrains.annotations.Contract;
+
 public enum PlayerSign {
     X("X"),
     O("O"),
@@ -11,6 +13,7 @@ public enum PlayerSign {
         sign = s;
     }
 
+    @Contract(pure = true)
     public String toString() {
         return this.sign;
     }

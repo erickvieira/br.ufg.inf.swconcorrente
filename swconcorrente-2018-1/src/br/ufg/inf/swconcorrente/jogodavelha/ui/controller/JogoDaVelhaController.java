@@ -1,10 +1,12 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.controller;
 
 import br.ufg.inf.swconcorrente.jogodavelha.ui.view.JogoDaVelhaTabView;
-import br.ufg.inf.swconcorrente.jogodavelha.ui.model.BoardPositions;
+import br.ufg.inf.swconcorrente.jogodavelha.ui.model.BoardMap;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.JogoDaVelha;
-import br.ufg.inf.swconcorrente.jogodavelha.ui.model.Matches;
+import br.ufg.inf.swconcorrente.jogodavelha.ui.model.MatchMap;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.PlayerSign;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,15 +21,15 @@ public class JogoDaVelhaController {
     private static final int TURNS_LIMIT = 9;
     private int turnsCount = 0;
 
-    private static final int TL     = BoardPositions.TOP_LEFT.getValue();
-    private static final int T      = BoardPositions.TOP.getValue();
-    private static final int TR     = BoardPositions.TOP_RIGHT.getValue();
-    private static final int L      = BoardPositions.LEFT.getValue();
-    private static final int C      = BoardPositions.CENTER.getValue();
-    private static final int R      = BoardPositions.RIGHT.getValue();
-    private static final int BL     = BoardPositions.BOTTOM_LEFT.getValue();
-    private static final int B      = BoardPositions.BOTTOM.getValue();
-    private static final int BR     = BoardPositions.BOTTOM_RIGHT.getValue();
+    private static final int TL     = BoardMap.TOP_LEFT.getValue();
+    private static final int T      = BoardMap.TOP.getValue();
+    private static final int TR     = BoardMap.TOP_RIGHT.getValue();
+    private static final int L      = BoardMap.LEFT.getValue();
+    private static final int C      = BoardMap.CENTER.getValue();
+    private static final int R      = BoardMap.RIGHT.getValue();
+    private static final int BL     = BoardMap.BOTTOM_LEFT.getValue();
+    private static final int B      = BoardMap.BOTTOM.getValue();
+    private static final int BR     = BoardMap.BOTTOM_RIGHT.getValue();
 
     private JogoDaVelhaTabView view;
     private JButton btnReset;
@@ -53,7 +55,7 @@ public class JogoDaVelhaController {
     private void initGame() {
         jogoDaVelha = new JogoDaVelha();
         currentPlayer = PlayerSign.X;
-        currentPosition = BoardPositions.NONE.getValue();
+        currentPosition = BoardMap.NONE.getValue();
     }
 
     private void initComponets() {
@@ -66,15 +68,9 @@ public class JogoDaVelhaController {
     }
 
     private void initButtons() {
-        initButtonSign(boardButtons.get(TL));
-        initButtonSign(boardButtons.get(T));
-        initButtonSign(boardButtons.get(TR));
-        initButtonSign(boardButtons.get(L));
-        initButtonSign(boardButtons.get(C));
-        initButtonSign(boardButtons.get(R));
-        initButtonSign(boardButtons.get(BL));
-        initButtonSign(boardButtons.get(B));
-        initButtonSign(boardButtons.get(BR));
+        for (JButton button: boardButtons) {
+            initButtonSign(button);
+        }
         currentPlayer = PlayerSign.X;
         player1.setForeground(Color.RED);
     }
@@ -90,10 +86,12 @@ public class JogoDaVelhaController {
     private void initIndividualButtonListener() {
         for (JButton button: boardButtons) {
             button.addActionListener(actionEvent -> {
+                swapPlayer();
                 setButtonSign(button);
                 currentPosition = boardButtons.indexOf(button);
+                System.out.println("[" + currentPlayer + ", " + currentPosition + "]");
                 doLogicGame();
-                swapPlayer();
+                swapPlayerColor();
             });
         }
     }
@@ -108,10 +106,10 @@ public class JogoDaVelhaController {
     }
 
     private void doLogicGame() {
-        Matches match = jogoDaVelha.setSelected(currentPosition, currentPlayer);
+        MatchMap match = jogoDaVelha.setSelected(currentPosition, currentPlayer);
         turnsCount++;
 
-        if (match != Matches.NONE) {
+        if (match != MatchMap.NONE) {
             gameOver();
         } else {
             if (turnsCount == TURNS_LIMIT) {
@@ -122,10 +120,13 @@ public class JogoDaVelhaController {
         System.out.println("" + turnsCount);
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String getCurrentPlayerName() {
         return (currentPlayer == PlayerSign.O) ? "Player 1" : "Player 2";
     }
 
+    @Contract(pure = true)
     private String getCurrentPlayerSign() {
         return currentPlayer.toString();
     }
@@ -145,12 +146,16 @@ public class JogoDaVelhaController {
     }
 
     private void swapPlayer() {
-        boolean currentPlayer_isX = (currentPlayer == PlayerSign.O);
+        boolean currentPlayer_isO = (currentPlayer == PlayerSign.O);
 
-        player1.setForeground(currentPlayer_isX ? Color.RED : Color.BLACK);
-        player2.setForeground(currentPlayer_isX ? Color.BLACK : Color.RED);
+        currentPlayer = currentPlayer_isO ? PlayerSign.X : PlayerSign.O;
+    }
 
-        currentPlayer = currentPlayer_isX ? PlayerSign.X : PlayerSign.O;
+    private void swapPlayerColor() {
+        boolean currentPlayer_isO = (currentPlayer == PlayerSign.O);
+
+        player1.setForeground(currentPlayer_isO ? Color.RED : Color.BLACK);
+        player2.setForeground(currentPlayer_isO ? Color.BLACK : Color.RED);
     }
 
 }

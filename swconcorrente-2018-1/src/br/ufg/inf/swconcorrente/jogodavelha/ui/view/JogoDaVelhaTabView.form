@@ -124,7 +124,7 @@
           <text value="Reset"/>
         </properties>
       </component>
-      <component id="89749" class="javax.swing.JLabel">
+      <component id="89749" class="javax.swing.JLabel" binding="lblPlayer1">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="111" height="32"/>
@@ -135,7 +135,7 @@
           <text value="PLAYER 1"/>
         </properties>
       </component>
-      <component id="44661" class="javax.swing.JLabel">
+      <component id="44661" class="javax.swing.JLabel" binding="lblPlayer2">
         <constraints>
           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="111" height="32"/>

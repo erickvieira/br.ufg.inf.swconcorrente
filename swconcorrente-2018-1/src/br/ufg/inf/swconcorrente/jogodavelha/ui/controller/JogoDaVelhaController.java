@@ -7,6 +7,8 @@ import br.ufg.inf.swconcorrente.jogodavelha.ui.model.Matches;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.PlayerSign;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class JogoDaVelhaController {
 
@@ -29,15 +31,9 @@ public class JogoDaVelhaController {
 
     private JogoDaVelhaTabView view;
     private JButton btnReset;
-    private JButton btnTL;
-    private JButton btnTop;
-    private JButton btnTR;
-    private JButton btnLeft;
-    private JButton btnCenter;
-    private JButton btnRight;
-    private JButton btnBL;
-    private JButton btnBottom;
-    private JButton btnBR;
+    private ArrayList<JButton> boardButtons;
+    private JLabel player1;
+    private JLabel player2;
 
     public JogoDaVelhaController() {
         initGame();
@@ -56,7 +52,7 @@ public class JogoDaVelhaController {
 
     private void initGame() {
         jogoDaVelha = new JogoDaVelha();
-        currentPlayer = PlayerSign.NONE;
+        currentPlayer = PlayerSign.X;
         currentPosition = BoardPositions.NONE.getValue();
     }
 
@@ -64,28 +60,23 @@ public class JogoDaVelhaController {
         view = new JogoDaVelhaTabView();
 
         btnReset =      view.getBtnJVReset();
-        btnTL =         view.getBtnTL();
-        btnLeft =       view.getBtnLeft();
-        btnBL =         view.getBtnBL();
-        btnTop =        view.getBtnTop();
-        btnCenter =     view.getBtnCenter();
-        btnBottom =     view.getBtnBottom();
-        btnTR =         view.getBtnTR();
-        btnRight =      view.getBtnRight();
-        btnBR =         view.getBtnBR();
+        boardButtons =  view.getButtons();
+        player1 =       view.getLblPlayer1();
+        player2 =       view.getLblPlayer2();
     }
 
     private void initButtons() {
-        setSign(btnTL, true);
-        setSign(btnTop, true);
-        setSign(btnTR, true);
-        setSign(btnLeft, true);
-        setSign(btnCenter, true);
-        setSign(btnRight, true);
-        setSign(btnBL, true);
-        setSign(btnBottom, true);
-        setSign(btnBR, true);
+        initButtonSign(boardButtons.get(TL));
+        initButtonSign(boardButtons.get(T));
+        initButtonSign(boardButtons.get(TR));
+        initButtonSign(boardButtons.get(L));
+        initButtonSign(boardButtons.get(C));
+        initButtonSign(boardButtons.get(R));
+        initButtonSign(boardButtons.get(BL));
+        initButtonSign(boardButtons.get(B));
+        initButtonSign(boardButtons.get(BR));
         currentPlayer = PlayerSign.X;
+        player1.setForeground(Color.RED);
     }
 
     public JButton getBtnReset() {
@@ -93,68 +84,27 @@ public class JogoDaVelhaController {
     }
 
     private void initListenners() {
-        btnBR.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnBR, false);
-            currentPosition = BR;
-            doLogicGame();
-        });
+        initIndividualButtonListener();
+    }
 
-        btnRight.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnRight, false);
-            currentPosition = R;
-            doLogicGame();
-        });
+    private void initIndividualButtonListener() {
+        for (JButton button: boardButtons) {
+            button.addActionListener(actionEvent -> {
+                setButtonSign(button);
+                currentPosition = boardButtons.indexOf(button);
+                doLogicGame();
+                swapPlayer();
+            });
+        }
+    }
 
-        btnTR.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnTR, false);
-            currentPosition = TR;
-            doLogicGame();
-        });
-
-        btnBottom.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnBottom, false);
-            currentPosition = B;
-            doLogicGame();
-        });
-
-        btnCenter.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnCenter, false);
-            currentPosition = C;
-            doLogicGame();
-        });
-
-        btnTop.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnTop, false);
-            currentPosition = T;
-            doLogicGame();
-        });
-
-        btnTL.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnTL, false);
-            currentPosition = TL;
-            doLogicGame();
-        });
-
-        btnLeft.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnLeft, false);
-            currentPosition = L;
-            doLogicGame();
-        });
-
-        btnBL.addActionListener(e -> {
-            swapPlayer();
-            setSign(btnBL, false);
-            currentPosition = BL;
-            doLogicGame();
-        });
+    private void gameOver() {
+        for (JButton button: boardButtons) {
+            if(button.isEnabled()) {
+                button.setEnabled(false);
+            }
+        }
+        JOptionPane.showMessageDialog(null, "FIM DE JOGO!\n" + getCurrentPlayerName() + " foi o vencedor.");
     }
 
     private void doLogicGame() {
@@ -162,14 +112,14 @@ public class JogoDaVelhaController {
         turnsCount++;
 
         if (match != Matches.NONE) {
-            JOptionPane.showMessageDialog(null, "FIM DE JOGO!\n" + getCurrentPlayerName() + " foi o vencedor.");
+            gameOver();
         } else {
             if (turnsCount == TURNS_LIMIT) {
                 JOptionPane.showMessageDialog(null, "IH! DEU VELHA. :(");
             }
         }
         
-        System.out.printf("" + turnsCount);
+        System.out.println("" + turnsCount);
     }
 
     private String getCurrentPlayerName() {
@@ -180,9 +130,14 @@ public class JogoDaVelhaController {
         return currentPlayer.toString();
     }
 
-    private void setSign(JButton btn, boolean enabled) {
+    private void setButtonSign(JButton btn) {
         btn.setText(getCurrentPlayerSign());
-        btn.setEnabled(enabled);
+        btn.setEnabled(false);
+    }
+
+    private void initButtonSign(JButton btn) {
+        btn.setText(PlayerSign.NONE.toString());
+        btn.setEnabled(true);
     }
 
     private void resetSign(JButton btn) {
@@ -190,7 +145,12 @@ public class JogoDaVelhaController {
     }
 
     private void swapPlayer() {
-        currentPlayer = (currentPlayer == PlayerSign.X) ? PlayerSign.O : PlayerSign.X;
+        boolean currentPlayer_isX = (currentPlayer == PlayerSign.O);
+
+        player1.setForeground(currentPlayer_isX ? Color.RED : Color.BLACK);
+        player2.setForeground(currentPlayer_isX ? Color.BLACK : Color.RED);
+
+        currentPlayer = currentPlayer_isX ? PlayerSign.X : PlayerSign.O;
     }
 
 }

@@ -23,6 +23,17 @@ public class JogoDaVelha {
             MatchMap.BOTTOM_LEFT_TO_BOTTOM_RIGHT.getArray(),
     };
 
+    private static final MatchMap[] _ARRAY_MATCHES = {
+            MatchMap.TOP_RIGHT_TO_BOTTOM_RIGHT,
+            MatchMap.TOP_RIGHT_TO_BOTTOM_LEFT,
+            MatchMap.TOP_TO_BOTTOM,
+            MatchMap.TOP_RIGHT_TO_BOTTOM_RIGHT,
+            MatchMap.TOP_RIGHT_TO_BOTTOM_LEFT,
+            MatchMap.TOP_LEFT_TO_TOP_RIGHT,
+            MatchMap.LEFT_TO_RIGHT,
+            MatchMap.BOTTOM_LEFT_TO_BOTTOM_RIGHT,
+    };
+
     public JogoDaVelha() {
         initBoardGame();
         System.out.println("INIT LIST: " + boardGame.toString());
@@ -41,44 +52,103 @@ public class JogoDaVelha {
     public MatchMap setSelected(int position, PlayerSign player) {
         currentPlayer = player;
         boardGame.set(position, player);
-        if (checkGameOver()) {
+        if (turnVerify()) {
+            printAsBoard();
+            System.out.println("<<" + currentPlayer.toString() + ">>");
             return match;
         } else {
             return MatchMap.NONE;
         }
     }
 
+    private void printAsBoard() {
+        System.out.printf("" +
+                " =========== \n" +
+                "| %s | %s | %s |\n" +
+                "|---|---|---|\n" +
+                "| %s | %s | %s |\n" +
+                "|---|---|---|\n" +
+                "| %s | %s | %s |\n" +
+                " =========== \n",
+                boardGame.get(0).toString(),
+                boardGame.get(1).toString(),
+                boardGame.get(2).toString(),
+                boardGame.get(3).toString(),
+                boardGame.get(4).toString(),
+                boardGame.get(5).toString(),
+                boardGame.get(6).toString(),
+                boardGame.get(7).toString(),
+                boardGame.get(8).toString());
+    }
+
     @Contract(pure = true)
     private boolean checkIsMarked(int position, PlayerSign sign) {
-        return boardGame.get(position) == sign;
+        System.out.println("COMPARING:[ " + boardGame.get(position) + ", " + sign + " ]");
+        return boardGame.get(position).compare(sign);
     }
 
     private boolean checkGameOver() {
         boolean foundMatch = false;
-        boolean tryToMatch[] = { false, false, false };
 
         for (int[] matches: ARRAY_MATCHES) {
             int count = 0;
+            boolean tryToMatch[] = { false, false, false };
             for (int element: matches) {
                 tryToMatch[count] = checkIsMarked(element, currentPlayer);
+                System.out.println("[" + currentPlayer + ", " + element + "]");
                 System.out.println(Arrays.toString(tryToMatch));
                 System.out.println(Arrays.toString(matches));
                 foundMatch = verifyPossibleMatch(tryToMatch);
 
                 if (foundMatch) {
+                    System.out.println("BOARD: {\n" +
+                            "\t\t" + boardGame.get(matches[0]) + ",\n" +
+                            "\t\t" + boardGame.get(matches[1]) + ",\n" +
+                            "\t\t" + boardGame.get(matches[2]) + "\n" +
+                            "}");
                     setMatch(matches);
+                    System.out.println("\n\n\n\n<BR1>\n\n\n");
                     break;
                 }
 
                 count++;
             }
 
+            System.out.println("BOARD: {\n" +
+                    "\t\t" + boardGame.get(matches[0]) + ",\n" +
+                    "\t\t" + boardGame.get(matches[1]) + ",\n" +
+                    "\t\t" + boardGame.get(matches[2]) + "\n" +
+                    "}");
             if (foundMatch) {
+                System.out.println("\n\n\n\n<BR2>\n\n\n");
                 break;
             }
         }
 
         return foundMatch;
+    }
+
+    private boolean turnVerify() {
+        StringBuilder concatLogicTest = new StringBuilder();
+        concatLogicTest.append("");
+        boolean gameOver = false;
+
+        for (MatchMap match : _ARRAY_MATCHES) {
+            int[] arr = match.getArray();
+
+            for (int index : arr) {
+                concatLogicTest.append(checkIsMarked(arr[index], currentPlayer) ? "T" : "F");
+            }
+
+            gameOver = concatLogicTest.toString().equals("TTT");
+
+            if (gameOver) {
+                this.match = match;
+                break;
+            }
+        }
+
+        return gameOver;
     }
 
     private boolean verifyPossibleMatch(boolean[] array) {

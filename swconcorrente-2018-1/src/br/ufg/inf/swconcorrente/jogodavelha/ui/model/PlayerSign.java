@@ -7,22 +7,18 @@ public enum PlayerSign {
     O("O"),
     NONE(" ");
 
-    private final String sign;
+    private final String SIGN;
 
-    PlayerSign(String s) {
-        sign = s;
+    PlayerSign(final String SIGN) {
+        this.SIGN = SIGN;
     }
 
-    public boolean compare(String sign) {
-        return this.sign.equals(sign);
-    }
-
-    public boolean compare(PlayerSign sign) {
-        return this.sign.equals(sign.toString());
+    public boolean compare(final PlayerSign SIGN) {
+        return this.SIGN.equals(SIGN.toString());
     }
 
     @Contract(pure = true)
     public String toString() {
-        return this.sign;
+        return this.SIGN;
     }
 }

@@ -7,19 +7,19 @@ import java.util.ArrayList;
 
 public class JogoDaVelhaTabView extends JFrame {
 
-    private static final int WIDTH = 380;
+    private static final int WIDTH = 400;
     private static final int HEIGHT = 560;
     private static final int BOARD_LIMIT = 9;
 
-    private static final int TL     = BoardMap.TOP_LEFT.getValue();
-    private static final int T      = BoardMap.TOP.getValue();
-    private static final int TR     = BoardMap.TOP_RIGHT.getValue();
-    private static final int L      = BoardMap.LEFT.getValue();
-    private static final int C      = BoardMap.CENTER.getValue();
-    private static final int R      = BoardMap.RIGHT.getValue();
-    private static final int BL     = BoardMap.BOTTOM_LEFT.getValue();
-    private static final int B      = BoardMap.BOTTOM.getValue();
-    private static final int BR     = BoardMap.BOTTOM_RIGHT.getValue();
+    private static final int TL     = BoardMap.TOP_LEFT.getPosition();
+    private static final int T      = BoardMap.TOP.getPosition();
+    private static final int TR     = BoardMap.TOP_RIGHT.getPosition();
+    private static final int L      = BoardMap.LEFT.getPosition();
+    private static final int C      = BoardMap.CENTER.getPosition();
+    private static final int R      = BoardMap.RIGHT.getPosition();
+    private static final int BL     = BoardMap.BOTTOM_LEFT.getPosition();
+    private static final int B      = BoardMap.BOTTOM.getPosition();
+    private static final int BR     = BoardMap.BOTTOM_RIGHT.getPosition();
 
     private JPanel boardPanel;
     private JButton btnJVReset;

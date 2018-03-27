@@ -18,13 +18,13 @@ public enum BoardMap {
     * BOTTOM_LEFT  |   BOTTOM   | BOTTOM_RIGHT
     * */
 
-    private final int value;
+    private final int POSITION;
 
-    BoardMap(final int newValue) {
-        value = newValue;
+    BoardMap(final int POSITION) {
+        this.POSITION = POSITION;
     }
 
-    public int getValue() {
-        return value;
+    public int getPosition() {
+        return POSITION;
     }
 }

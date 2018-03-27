@@ -28,6 +28,10 @@ public class JogoDaVelhaController {
     private JLabel player2;
 
     public JogoDaVelhaController() {
+        startGame();
+    }
+
+    private void startGame() {
         initGame();
         initComponets();
         initButtons();
@@ -39,13 +43,14 @@ public class JogoDaVelhaController {
     }
 
     private void restartGame() {
-        new JogoDaVelhaController();
+        startGame();
+        resetSign();
     }
 
     private void initGame() {
         jogoDaVelha = new JogoDaVelha();
         currentPlayer = PlayerSign.NONE;
-        currentPosition = BoardMap.NONE.getValue();
+        currentPosition = BoardMap.NONE.getPosition();
     }
 
     private void initComponets() {
@@ -65,26 +70,32 @@ public class JogoDaVelhaController {
         player1.setForeground(Color.RED);
     }
 
-    public JButton getBtnReset() {
-        return btnReset;
-    }
-
     private void initListenners() {
         initIndividualButtonListener();
+        initResetButtonListener();
     }
 
     private void initIndividualButtonListener() {
         for (JButton button: boardButtons) {
             button.addActionListener(actionEvent -> {
-                turnsCount++;
-                swapPlayer();
-                setButtonSign(button);
-                currentPosition = boardButtons.indexOf(button);
-                System.out.println("CLICKADO [" + currentPlayer + ", " + currentPosition + "]");
-                doLogicGame();
-                swapPlayerColor();
+                buttonAction(button);
             });
         }
+    }
+
+    private void initResetButtonListener() {
+        btnReset.addActionListener(actionEvent -> {
+            restartGame();
+        });
+    }
+
+    private void buttonAction(JButton button) {
+        turnsCount++;
+        swapPlayer();
+        setButtonSign(button);
+        currentPosition = boardButtons.indexOf(button);
+        doLogicGame();
+        swapPlayerColor();
     }
 
     private void gameOver() {
@@ -131,12 +142,15 @@ public class JogoDaVelhaController {
         btn.setEnabled(true);
     }
 
-    private void resetSign(JButton btn) {
-        btn.setText(PlayerSign.NONE.toString());
+    private void resetSign() {
+        for (JButton btn : boardButtons) {
+            btn.setText(PlayerSign.NONE.toString());
+            btn.setEnabled(true);
+            boardButtons.set(boardButtons.indexOf(btn), btn);
+        }
     }
 
     private void swapPlayer() {
-        System.out.println("CURRENT_PLAYER [" + currentPlayer + "]");
         currentPlayer = (currentPlayer == PlayerSign.X) ? PlayerSign.O : PlayerSign.X;
     }
 

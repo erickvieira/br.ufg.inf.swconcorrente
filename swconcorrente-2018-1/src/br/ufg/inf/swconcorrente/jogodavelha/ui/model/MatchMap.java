@@ -2,76 +2,72 @@ package br.ufg.inf.swconcorrente.jogodavelha.ui.model;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.Arrays;
-
 public enum MatchMap {
     TOP_LEFT_TO_BOTTOM_RIGHT(
-            BoardMap.TOP_LEFT.getValue(),
-            BoardMap.CENTER.getValue(),
-            BoardMap.BOTTOM_RIGHT.getValue()
+        new int[] {
+            BoardMap.TOP_LEFT.getPosition(),
+            BoardMap.CENTER.getPosition(),
+            BoardMap.BOTTOM_RIGHT.getPosition()
+        }
     ), TOP_LEFT_TO_BOTTOM_LEFT(
-            BoardMap.TOP_LEFT.getValue(),
-            BoardMap.LEFT.getValue(),
-            BoardMap.BOTTOM_LEFT.getValue()
+        new int[] {
+            BoardMap.TOP_LEFT.getPosition(),
+            BoardMap.LEFT.getPosition(),
+            BoardMap.BOTTOM_LEFT.getPosition()
+        }
     ), TOP_TO_BOTTOM(
-            BoardMap.TOP.getValue(),
-            BoardMap.CENTER.getValue(),
-            BoardMap.BOTTOM.getValue()
+        new int[] {
+            BoardMap.TOP.getPosition(),
+            BoardMap.CENTER.getPosition(),
+            BoardMap.BOTTOM.getPosition()
+        }
     ), TOP_RIGHT_TO_BOTTOM_RIGHT(
-            BoardMap.TOP_RIGHT.getValue(),
-            BoardMap.RIGHT.getValue(),
-            BoardMap.BOTTOM_RIGHT.getValue()
+        new int[] {
+            BoardMap.TOP_RIGHT.getPosition(),
+            BoardMap.RIGHT.getPosition(),
+            BoardMap.BOTTOM_RIGHT.getPosition()
+        }
     ), TOP_RIGHT_TO_BOTTOM_LEFT(
-            BoardMap.TOP_RIGHT.getValue(),
-            BoardMap.CENTER.getValue(),
-            BoardMap.BOTTOM_LEFT.getValue()
+        new int[] {
+            BoardMap.TOP_RIGHT.getPosition(),
+            BoardMap.CENTER.getPosition(),
+            BoardMap.BOTTOM_LEFT.getPosition()
+        }
     ), TOP_LEFT_TO_TOP_RIGHT(
-            BoardMap.TOP_LEFT.getValue(),
-            BoardMap.TOP.getValue(),
-            BoardMap.TOP_RIGHT.getValue()
+        new int[] {
+            BoardMap.TOP_LEFT.getPosition(),
+            BoardMap.TOP.getPosition(),
+            BoardMap.TOP_RIGHT.getPosition()
+        }
     ), LEFT_TO_RIGHT(
-            BoardMap.LEFT.getValue(),
-            BoardMap.CENTER.getValue(),
-            BoardMap.RIGHT.getValue()
+        new int[] {
+            BoardMap.LEFT.getPosition(),
+            BoardMap.CENTER.getPosition(),
+            BoardMap.RIGHT.getPosition()
+        }
     ), BOTTOM_LEFT_TO_BOTTOM_RIGHT(
-            BoardMap.BOTTOM_LEFT.getValue(),
-            BoardMap.BOTTOM.getValue(),
-            BoardMap.BOTTOM_RIGHT.getValue()
-    ), NONE(null);
+        new int[] {
+            BoardMap.BOTTOM_LEFT.getPosition(),
+            BoardMap.BOTTOM.getPosition(),
+            BoardMap.BOTTOM_RIGHT.getPosition()
+        }
+    ), NONE(
+        new int[] {
+            BoardMap.NONE.getPosition(),
+            BoardMap.NONE.getPosition(),
+            BoardMap.NONE.getPosition()
+        }
+    );
 
-    public final String NO_HASH = "-1";
-    private final int LIMIT = 3;
-    private int[] array = new int[LIMIT];
-    private String hashCode;
+    private final int[] ARRAY;
 
-    MatchMap(int pos1, int pos2, int pos3) {
-        this.array[0] = pos1;
-        this.array[1] = pos2;
-        this.array[2] = pos3;
-        hash();
-    }
-
-    MatchMap(int[] array) {
-        this.array = array;
-        hashCode = NO_HASH;
-    }
-
-    private void hash() {
-        hashCode = String.format("%s%s%s", array[0], array[1], array[2]);
-    }
-
-    public String getHashCode() {
-        return hashCode;
-    }
-
-    @Contract(pure = true)
-    public boolean equals(int[] array) {
-        return Arrays.equals(array, this.array);
+    MatchMap(final int[] ARRAY) {
+        this.ARRAY = ARRAY;
     }
 
     @Contract(pure = true)
     public int[] getArray() {
-        return array;
+        return ARRAY;
     }
 
 }

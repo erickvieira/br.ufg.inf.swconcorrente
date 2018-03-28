@@ -3,7 +3,6 @@ package br.ufg.inf.swconcorrente.jogodavelha.ui.model;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class JogoDaVelha {
 

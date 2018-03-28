@@ -1,10 +1,10 @@
 package br.ufg.inf.swconcorrente.jogodavelha.ui.controller;
 
-import br.ufg.inf.swconcorrente.jogodavelha.ui.view.JogoDaVelhaTabView;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.BoardMap;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.JogoDaVelha;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.MatchMap;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.model.PlayerSign;
+import br.ufg.inf.swconcorrente.jogodavelha.ui.view.JogoDaVelhaTabView;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

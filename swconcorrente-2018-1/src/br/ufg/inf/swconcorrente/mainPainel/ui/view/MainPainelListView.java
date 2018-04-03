@@ -15,6 +15,7 @@ public class MainPainelListView extends JFrame {
     private JLabel mainLabel;
     private JButton btnJDV;
     private JButton btnDecript;
+    private JButton btnEncript;
 
     public MainPainelListView() {
         setSize(WIDTH, HEIGHT);
@@ -28,6 +29,10 @@ public class MainPainelListView extends JFrame {
 
     public JButton getBtnDecript() {
         return btnDecript;
+    }
+
+    public JButton getBtnEncript() {
+        return btnEncript;
     }
 
     public JLabel getMainLabel() {

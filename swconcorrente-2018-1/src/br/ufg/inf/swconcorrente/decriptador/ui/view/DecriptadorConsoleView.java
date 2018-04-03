@@ -31,6 +31,8 @@ public class DecriptadorConsoleView extends JFrame {
     }
 
     public JTextArea getTxtOutput() {
+        txtOutput.setRows(16);
+        txtOutput.setRows(60);
         return txtOutput;
     }
 

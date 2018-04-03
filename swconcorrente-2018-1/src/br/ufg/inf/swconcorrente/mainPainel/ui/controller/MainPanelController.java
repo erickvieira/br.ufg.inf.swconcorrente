@@ -1,5 +1,6 @@
 package br.ufg.inf.swconcorrente.mainPainel.ui.controller;
 
+import br.ufg.inf.swconcorrente.decriptador.ui.controller.DecriptadorController;
 import br.ufg.inf.swconcorrente.jogodavelha.ui.controller.JogoDaVelhaController;
 import br.ufg.inf.swconcorrente.mainPainel.ui.view.MainPainelListView;
 
@@ -13,6 +14,7 @@ public class MainPanelController {
     private MainPainelListView view;
     private JButton btnJDV;
     private JButton btnDecript;
+    private JButton btnEncript;
     private JLabel mainLabel;
 
     public MainPanelController() {
@@ -35,6 +37,7 @@ public class MainPanelController {
         mainLabel =     view.getMainLabel();
         btnJDV =        view.getBtnJDV();
         btnDecript =    view.getBtnDecript();
+        btnEncript =    view.getBtnEncript();
     }
 
     private void initButtons() {
@@ -47,7 +50,11 @@ public class MainPanelController {
         });
 
         btnDecript.addActionListener(actionEvent -> {
-            // TODO: DECRIPTADOR CALLER
+            new DecriptadorController(false).showDecriptador();
+        });
+
+        btnEncript.addActionListener(actionEvent -> {
+            new DecriptadorController(true).showDecriptador();
         });
     }
 

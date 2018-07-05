@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="br.ufg.inf.swconcorrente.prevtemp.ui.view.PrevTempConsoleView">
+  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="528" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="244fd" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="c95a3" class="javax.swing.JComboBox" binding="cbxCidades">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <editable value="false"/>
+              <enabled value="true"/>
+              <model>
+                <item value="Selecione uma cidade:"/>
+              </model>
+              <toolTipText value="Cidades disponíveis"/>
+            </properties>
+          </component>
+          <component id="ee581" class="javax.swing.JLabel">
+            <constraints border-constraint="West"/>
+            <properties>
+              <text value="  CIDADES:  "/>
+            </properties>
+          </component>
+          <vspacer id="b9e7b">
+            <constraints border-constraint="North"/>
+          </vspacer>
+          <vspacer id="ef821">
+            <constraints border-constraint="South"/>
+          </vspacer>
+        </children>
+      </grid>
+      <component id="108dd" class="javax.swing.JLabel" binding="lblTitle">
+        <constraints border-constraint="North"/>
+        <properties>
+          <font name="Neo Sans Std" size="24" style="1"/>
+          <horizontalAlignment value="0"/>
+          <text value="PREVISÃO DO TEMPO"/>
+        </properties>
+        <clientProperties>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+      </component>
+      <component id="456ee" class="javax.swing.JTextArea" binding="txtRelatorio">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <editable value="false"/>
+          <lineWrap value="true"/>
+          <text value="RELATORIO"/>
+          <toolTipText value="Relatório em tempo real"/>
+        </properties>
+      </component>
+      <hspacer id="d2b4e">
+        <constraints border-constraint="West"/>
+      </hspacer>
+      <hspacer id="3a146">
+        <constraints border-constraint="East"/>
+      </hspacer>
+    </children>
+  </grid>
+</form>

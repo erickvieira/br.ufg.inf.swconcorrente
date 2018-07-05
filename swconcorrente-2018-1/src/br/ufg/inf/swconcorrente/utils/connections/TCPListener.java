@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.net.DatagramSocket;
 import java.net.Socket;
 
 /**
@@ -21,7 +22,14 @@ public class TCPListener implements IConnector {
     }
 
     @Override
+    public void okCallback(String msg) { }
+
+    @Override
+    public void failCallback(String msg) { }
+
+    @Override
     public String makeRequest(
+            @Nullable DatagramSocket receiveSocket,
             @NotNull String request,
             @Nullable Function1<? super String, Unit> onSuccess,
             @Nullable Function1<? super String, Unit> onFailure
@@ -42,8 +50,9 @@ public class TCPListener implements IConnector {
             response = bReader.readLine();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            assert onFailure != null;
-            onFailure.invoke(e.getMessage());
+            if (onFailure != null) {
+                onFailure.invoke(e.getMessage());
+            }
             e.printStackTrace();
         }
 

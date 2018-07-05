@@ -4,12 +4,12 @@ public class ServerInfo {
 
     private final String HOST;
     private final int TCP_PORT;
-    private final String UDP_PORT;
+    private final int UDP_PORT;
 
     public ServerInfo() {
-        HOST = "192.168.5.34";
+        HOST = "192.168.1.122";
         TCP_PORT = 12345;
-        UDP_PORT = "1234";
+        UDP_PORT = 1234;
     }
 
     public String getHost() {
@@ -20,7 +20,7 @@ public class ServerInfo {
         return TCP_PORT;
     }
 
-    public String getUdpPort() {
+    public int getUdpPort() {
         return UDP_PORT;
     }
 

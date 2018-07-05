@@ -2,7 +2,6 @@ package br.ufg.inf.swconcorrente.utils.connections;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.DatagramSocket;
@@ -12,9 +11,10 @@ import java.net.Socket;
 public class ConnectorService {
 
     private Socket tcpSocket;
-    private DatagramSocket udpSocket;
+    private DatagramSocket udpPostman;
+    private DatagramSocket udpMailbox;
     private TCPListener staticListener;
-    private UDPListener dynamicListener;
+    private UDPWorker dynamicListener;
 
     public ConnectorService(final String host, final int port) {
         try {
@@ -28,21 +28,14 @@ public class ConnectorService {
         }
     }
 
-    public ConnectorService(final String host, final int port, final boolean isUdp) {
+    public ConnectorService(final int receivePort) {
         try {
-            InetAddress address = InetAddress.getByName(host);
-            tcpSocket = new Socket(address, port);
-            udpSocket = new DatagramSocket(port, address);
-
-            dynamicListener = new UDPListener(udpSocket);
+            udpPostman = new DatagramSocket();
+            udpMailbox = new DatagramSocket(receivePort);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    public String submit(String request) {
-        return staticListener.makeRequest(request, null, null);
     }
 
     public String submit(
@@ -50,11 +43,7 @@ public class ConnectorService {
             Function1<? super String, Unit> onSuccess,
             Function1<? super String, Unit> onFailure
     ) {
-        return staticListener.makeRequest(request, onSuccess, onFailure);
-    }
-
-    public void subscribe(String request) {
-        dynamicListener.makeRequest(request, null, null);
+        return staticListener.makeRequest(null, request, onSuccess, onFailure);
     }
 
     public void subscribe(
@@ -62,7 +51,15 @@ public class ConnectorService {
             Function1<? super String, Unit> onSuccess,
             Function1<? super String, Unit> onFailure
     ) {
-        dynamicListener.makeRequest(request, onSuccess, onFailure);
+        dynamicListener = new UDPWorker(udpMailbox, udpPostman, request, onSuccess, onFailure);
+        dynamicListener.run();
+    }
+
+    public void unsubscribe() {
+        if (dynamicListener != null) {
+            dynamicListener.cancel(true);
+            dynamicListener = null;
+        }
     }
 
 }

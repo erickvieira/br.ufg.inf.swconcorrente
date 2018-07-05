@@ -30,8 +30,8 @@ public class PrevTempConsoleView extends JFrame {
     }
 
     public JTextArea getTxtRelatorio() {
-        txtRelatorio.setRows(16);
-        txtRelatorio.setRows(60);
+        txtRelatorio.setColumns(80);
+        txtRelatorio.setRows(40);
         return txtRelatorio;
     }
 

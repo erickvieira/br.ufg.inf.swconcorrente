@@ -22,6 +22,12 @@ public class PrevTempController extends ServerInfo {
     private JTextArea txtRelatorio;
     private DefaultComboBoxModel boxModel;
 
+    private final String INFO   = "[!] ";
+    private final String RET    = "[<] ";
+    private final String INPUT  = "[>] ";
+    private final String ERRO   = "[E] ";
+    private final String WAIT   = "[~] ";
+
     private String[] response;
     private int ARR_TOKEN = 1;
     private int ARR_SETUP = 2;
@@ -31,12 +37,18 @@ public class PrevTempController extends ServerInfo {
     private char[] keys;
     private String token;
     private String separator;
-    private String udpPort;
+    private String updReceivePort;
 
-    private ConnectorService socketCtrl;
+    private ConnectorService tcpSocket;
+    private ConnectorService udpSocket;
 
-    private Function1<? super String, Unit> onFailureCallback = (Function1<String, Unit>) s -> {
-        JOptionPane.showMessageDialog(null, s);
+    private Function1<? super String, Unit> onSuccessCallback = (Function1<String, Unit>) str -> {
+        writeLineOnTxtArea(INFO + str);
+        return null;
+    };
+
+    private Function1<? super String, Unit> onFailureCallback = (Function1<String, Unit>) str -> {
+        presentMessage(str);
         return null;
     };
 
@@ -52,11 +64,11 @@ public class PrevTempController extends ServerInfo {
     }
 
     public void presentMessage(String msg) {
-        JOptionPane.showMessageDialog(null, msg);
+        JOptionPane.showMessageDialog(view, msg);
     }
 
     private void initConnection() {
-        socketCtrl = new ConnectorService(super.getHost(), super.getTcpPort());
+        tcpSocket = new ConnectorService(super.getHost(), super.getTcpPort());
     }
 
     private void initComponents() {
@@ -77,13 +89,14 @@ public class PrevTempController extends ServerInfo {
             String msg = "GET LOCALS";
 
             String request = msg + "\n";
-            String response = socketCtrl.submit(request, null, onFailureCallback);
+            String response = tcpSocket.submit(request, onSuccessCallback, onFailureCallback);
 
             if (
                     response != null &&
                     response.substring(0, 2).equals("OK")
             ) {
-                writeLineOnTxtArea("CONEXÃO ESTABELECIDA COM SUCESSO!");
+                writeLineOnTxtArea(INFO + "CONEXÃO ESTABELECIDA COM SUCESSO!");
+                writeLineOnTxtArea(INPUT + "SELECIONE UMA CIDADE NA COMBOBOX A BAIXO:");
                 String s = response;
                 s = s.substring(3, response.length());
                 s = s.replace("|", ", ");
@@ -96,7 +109,7 @@ public class PrevTempController extends ServerInfo {
                 CitiesItemListener listener = new CitiesItemListener();
                 cbxCidades.addItemListener(listener);
             } else {
-                writeLineOnTxtArea("FALHA NA CONEXÃO! TENTE NOVAMENTE MAIS TARDE.");
+                writeLineOnTxtArea(ERRO + "FALHA NA CONEXÃO! TENTE NOVAMENTE MAIS TARDE.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,25 +134,34 @@ public class PrevTempController extends ServerInfo {
 
     private void subscribeCity(String city) {
         if (city.equals(DEFAULT_CBX_VALUE)) {
-            JOptionPane.showMessageDialog(null, "É necessário escolher uma cidade.");
+            presentMessage("É necessário escolher uma cidade.");
         } else {
-            System.out.println("ITEM SELECIONADO: " + city);
+            clearTxtArea();
             String msg = "REGISTER " + city;
             String request = msg + "\n";
-            String response = socketCtrl.submit(request);
+            String response = tcpSocket.submit(request, onSuccessCallback, onFailureCallback);
 
             if (response != null && response.substring(0, 2).equals("OK")) {
                 writeLineOnTxtArea(response);
-                interpretResponse(response);
-                writeLineOnTxtArea("TOKEN: " + token + "\n" +
-                        "KEYS: " + Arrays.toString(keys) + "\n" +
-                        "SEP: " + separator + "\n" +
-                        "PORT: " + udpPort
+                interpretResponse(INFO + response);
+                writeLineOnTxtArea(INFO + "TOKEN: " + token + "\n" +
+                        INFO + "KEYS: " + Arrays.toString(keys) + "\n" +
+                        INFO + "SEP: " + separator + "\n" +
+                        INFO + "PORT: " + updReceivePort
                 );
+
+                startPrevTemp();
             } else {
-                writeLineOnTxtArea("FALHA NA CONEXÃO! TENTE NOVAMENTE MAIS TARDE.");
+                writeLineOnTxtArea(ERRO + "FALHA NA CONEXÃO! TENTE NOVAMENTE MAIS TARDE.");
             }
         }
+    }
+
+    private void startPrevTemp() {
+        udpSocket = new ConnectorService(Integer.parseInt(updReceivePort));
+        String request = "START " + token;
+        presentMessage(request);
+        udpSocket.subscribe(request, onSuccessCallback, onFailureCallback);
     }
 
     private void interpretResponse(String response) {
@@ -149,11 +171,11 @@ public class PrevTempController extends ServerInfo {
         token = this.response[ARR_TOKEN];
         keys = this.response[ARR_SETUP].toCharArray();
         separator = this.response[ARR_SEPARATOR];
-        udpPort = this.response[ARR_UDP_PORT];
+        updReceivePort = this.response[ARR_UDP_PORT];
     }
 
-    private void unsubscribeCity(String city) {
-        System.out.println("ITEM DESSELECIONADO: " + city);
+    private void unsubscribeCity(String _) {
+        //udpSocket.unsubscribe();
     }
 
     private class CitiesItemListener implements ItemListener {

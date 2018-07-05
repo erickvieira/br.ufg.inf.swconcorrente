@@ -7,7 +7,7 @@ public class ServerInfo {
     private final int UDP_PORT;
 
     public ServerInfo() {
-        HOST = "192.168.1.122";
+        HOST = "192.168.0.13";
         TCP_PORT = 12345;
         UDP_PORT = 1234;
     }

@@ -72,21 +72,22 @@ public class UDPWorker extends SwingWorker<String, String> implements IConnector
             byte[] sendData = formatRequest(request);
             sendPkt = new DatagramPacket(sendData, sendData.length, address, srv.getUdpPort());
             sendSocket.send(sendPkt);
-            okCallback(".");
+
+            byte[] receiveData = new byte[1024];
+            receivePkt = new DatagramPacket(receiveData, receiveData.length);
+            response = new String(receivePkt.getData());
+            System.out.println(response);
+            okCallback(response);
 
             while (true) {
-                okCallback(".");
-                byte[] receiveData = new byte[1024];
-                receivePkt = new DatagramPacket(receiveData, receiveData.length);
-                Objects.requireNonNull(receiveSocket).receive(receivePkt);
-
+                Objects.requireNonNull(this.receiveSocket).receive(receivePkt);
                 response = new String(receivePkt.getData());
-                okCallback((response.isEmpty()) ? "[E] ERRO NA COMUNICAÇÃO" : response);
+                failCallback((response.isEmpty()) ? "[E] ERRO NA COMUNICAÇÃO" : response);
 
-                if (response.substring(0, 2).equals("OK")) {
-                    okCallback(response);
-                } else {
+                if (response.contains("ERROR")) {
                     failCallback(response);
+                } else {
+                    okCallback(response);
                 }
             }
         } catch (Exception e) {

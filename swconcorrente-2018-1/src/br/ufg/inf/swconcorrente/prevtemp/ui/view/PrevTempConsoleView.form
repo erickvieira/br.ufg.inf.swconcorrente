@@ -25,6 +25,7 @@
               <autoscrolls value="true"/>
               <editable value="false"/>
               <enabled value="true"/>
+              <font name="Courier 10 Pitch" size="16"/>
               <foreground color="-16315830"/>
               <model>
                 <item value="Selecione uma cidade:"/>
@@ -78,8 +79,9 @@
         <properties>
           <background color="-16315830"/>
           <editable value="false"/>
-          <font name="Consolas"/>
+          <font name="DejaVu Sans Mono" size="14"/>
           <foreground color="-1"/>
+          <lineWrap value="true"/>
           <margin top="10" left="10" bottom="10" right="10"/>
           <selectedTextColor color="-16315830"/>
           <selectionColor color="-1"/>

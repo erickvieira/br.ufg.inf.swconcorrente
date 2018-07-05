@@ -43,6 +43,7 @@ public class PrevTempController extends ServerInfo {
     private ConnectorService udpSocket;
 
     private Function1<? super String, Unit> onSuccessCallback = (Function1<String, Unit>) str -> {
+        clearTxtArea();
         writeLineOnTxtArea(INFO + str);
         return null;
     };

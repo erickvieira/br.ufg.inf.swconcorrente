@@ -52,7 +52,7 @@ public class ConnectorService {
             Function1<? super String, Unit> onFailure
     ) {
         dynamicListener = new UDPWorker(udpMailbox, udpPostman, request, onSuccess, onFailure);
-        dynamicListener.run();
+        dynamicListener.execute();
     }
 
     public void unsubscribe() {
